@@ -14,13 +14,21 @@
   </head>
 
   <body>
-    <h1>Buscador de cocktail</h1>
-    <input type="text" class="js_input" placeholder="Ej: Margarita">
-    <button class="js_btnSearch">Buscar</button>
-    <button class="js_btnReset">Reset</button>
-    <h2>Listado de cocktail</h2>
-    <ul class="js_list"></ul>
-    <ul class="js_favorite"></ul>
+    <main>
+      <h1>Buscador de cocktail</h1>
+      <input type="text" class="js_input" placeholder="Ej: Margarita">
+      <button class="js_btnSearch">Buscar</button>
+      <button class="js_btnReset">Reset</button>
+      <section class="list">
+        <div class="list__totals">
+          <h2>Listado de cocktail</h2>
+          <ul class="js_list"></ul>
+        </div>
+        <div class="list__fav">
+          <h2>Lista de favoritos</h2>
+          <ul class="js_favorite"></ul>
+        </div>
+    </main>
     <script src="./js/main.js"></script>
   </body>
 </html>

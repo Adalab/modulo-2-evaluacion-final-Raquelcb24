@@ -28,7 +28,7 @@ const handleFavorite = (event) =>{
 
     const selectedDrinkId = event.currentTarget.id;
     console.log(selectedDrinkId);
-
+    
     const clickedData = cocktailsData.find((item)=> item.idDrink ===selectedDrinkId);
     console.log(clickedData);
 
@@ -36,14 +36,18 @@ const handleFavorite = (event) =>{
 
     if (favoritesClickedIndex === -1){ //si existe en mi lista de elementos clickados, añadelo
         favoriteCocktails.push(clickedData);
-        
-    }else{ //sino añadelo 
-        favoriteCocktails.splice(favoritesClickedIndex, 1);
-    }
-        console.log(favoriteCocktails);
-        renderAllDrinks(cocktailsData);
+        event.currentTarget.classList.add('selected'); 
        
+    }else{ //sino quitalo
+        favoriteCocktails.splice(favoritesClickedIndex, 1);
+        event.currentTarget.classList.remove('selected'); 
+    }
+       
+    //cuando pulso en la bebida se pone y se quita la misma clase
 
+        console.log(favoriteCocktails);
+        renderFavoriteList();
+       localStorage.setItem('favoriteDrinks', JSON.stringify (favoriteCocktails));
     };
   
 
@@ -54,27 +58,41 @@ const renderAllDrinks = (arr) =>{ //estructura de todas mis bebidas
         drinksList.innerHTML += renderDrink(drink);
     }
 
-    const liDrink = document.querySelectorAll('.drinks');
+    const liDrink = document.querySelectorAll('.drinks'); //todads mis li
    
-    for (const drink of liDrink) {
-        drink.addEventListener('click', handleFavorite); //me da el id de la bebida en la que hago click
+    for (const item of liDrink) {
+        item.addEventListener('click', handleFavorite); //me da el id de la bebida en la que hago click
 }
 
 }; 
+const renderFavoriteList = ()=>{
+    favoritesList.innerHTML = "";
+    for (const drink of favoriteCocktails) {
+        favoritesList.innerHTML += renderDrink(drink);
+    }
+};
 
-
-
+const init = ()=>{
+    const favDrinksLocal = localStorage.getItem('favoriteDrinks');
+    if(favDrinksLocal !==null){
+        favoriteCocktails = JSON.parse(favDrinksLocal);
+        renderFavoriteList();
+    }
+    
+};
 
 const initialDataApi = ()=> {
     fetch (`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`)
-    .then ((response) => response.json())
-    .then ((data)=>{
-        console.log(data);
-        cocktailsData = data.drinks;
-        console.log(cocktailsData);
-        renderAllDrinks(cocktailsData); //funcion render tiene sentido ejecutarla aqui cuando quiero que aparerzca cuando inicio la pagina(margaritas)
-   
+    .then (response => response.json())
+    .then ((dataMargarita)=>{
+        console.log(dataMargarita);
+        cocktailsData = dataMargarita.drinks;
+        console.log(dataMargarita);
+        renderAllDrinks(cocktailsData); //funcion render la ejecuto aqui para que me coja los valores de margarita
+     
     });
+
+   
 
 };
 
@@ -83,22 +101,19 @@ const handleInput =()=>{
     const url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${valueInput}`; //creo una constante con una url que voy a utilizar segun el valor del input de busqueda
     
     fetch(url)
-    .then((response) => response.json())
-    .then((cocktailsData) => {
-        console.log(cocktailsData);
+    .then(response => response.json())
+    .then((totalData) => {
+        
+    console.log(totalData); //cuando le doy a buscar me aparece en la consola los cocktails de la búsqueda
 
-        if (cocktailsData.drinks) { //si los datos recogidos de la API.drinks son !==null, es decir, existen, ejecuta la funcion renderAll
-            renderAllDrinks(cocktailsData.drinks);
+        if (totalData.drinks) { //si los datos recogidos de la API.drinks son !==null, es decir, existen, se guardara su valor en el array cocktailsData y se ejecuta la funcion renderAll
+            cocktailsData = totalData.drinks;
+            renderAllDrinks(cocktailsData);
         } else {//sino, dime que no hay resultados
             console.log("No se encontraron resultados");
             drinksList.innerHTML = "<li>No se encontraron resultados</li>";
         };
-
-
-
     });
-   
-
 };
 
 
@@ -106,13 +121,16 @@ const handleInput =()=>{
 const handleClick = (event) =>{
     event.preventDefault();
     handleInput();
-   
+   //cuando le de al boton de buscar solo quiero que me salgan los que tengan el valor del imput
 };
 
 
-btnSearch.addEventListener('click', handleClick);
 
+
+
+btnSearch.addEventListener('click', handleClick);
+init();
 initialDataApi();
 
 
-//CREAR UNA LISTA EN EL HTML DONDE SE AGREGUEN LAS SELECCIONADA Y AÑADIR LA CLASE QUE LAS SELECCIONE. 
+
