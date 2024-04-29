@@ -4,8 +4,7 @@ const drinksList = document.querySelector('.js_list');//mi ul
 const inputSearch = document.querySelector('.js_input');//input para buscar
 const btnSearch = document.querySelector('.js_btnSearch');// boton buscar
 const favoritesList = document.querySelector('.js_favorite'); //ul donde voy a meter los favoritos
-
-const resetContainer = document.querySelectorAll('.js_reset_container'); //div contenedor de bebida y X
+const btnReset = document.querySelector('.js_btnReset');
 
 
 
@@ -18,7 +17,7 @@ let favoriteCocktails = []; //array para la lista de favoritos
 const renderDrink = (drink) => { //estructura de una bebida en el html
     return `
         <li class="drinks" id=${drink.idDrink}>
-            <h3>${drink.strDrink}</h3>
+            <h3 class="drinkName">${drink.strDrink}</h3>
             <div>
                 <img class="img" src="${drink.strDrinkThumb}" alt="cocktails">
             </div>
@@ -63,11 +62,9 @@ const renderAllDrinks = (arr) =>{ //estructura de todas mis bebidas
         let selectedClass = isFav ? 'selected' : '';
 
         drinksList.innerHTML +=`
-        <li class="drinks ${selectedClass}" id=${drink.idDrink}>
-                <h3>${drink.strDrink}</h3>
-                <div>
-                    <img class="img" src="${drink.strDrinkThumb}" alt="cocktails">
-                </div>
+        <li class="drinks ${selectedClass}" id="${drink.idDrink}">
+                <h3 class="drinkName">${drink.strDrink}</h3>
+                <img class="img" src="${drink.strDrinkThumb}" alt="cocktails">
             </li>`;
     }
 
@@ -101,12 +98,12 @@ const renderFavoriteList = ()=>{
     favoritesList.innerHTML = "";
 
     for (const drink of favoriteCocktails) { //creo mi li para meter los fav y añado debajo un boton reset
-
+        
         favoritesList.innerHTML += `
-        <li class="drinks js_drinks" id=${drink.idDrink}>
-            <h3>${drink.strDrink}</h3>   
+        <li class="drinks js_drinks" id="${drink.idDrink}">
+            <h3 class="drinkName">${drink.strDrink}</h3>   
             <img class="img" src="${drink.strDrinkThumb}" alt="cocktails">
-            <button  class="js_reset">X</button>
+            <button  class="btnX js_reset">X</button>
         </li>`; 
     }
 
@@ -122,6 +119,7 @@ const init = ()=>{
     if(favDrinksLocal !==null){
         favoriteCocktails = JSON.parse(favDrinksLocal);
         renderFavoriteList();
+        //busco en local si tengo datos guardados como fav, si encuentro 
     }
     
 };
@@ -170,8 +168,20 @@ const handleClick = (event) =>{
 };
 
 btnSearch.addEventListener('click', handleClick);
+
+
+
+//busca en el localStorage si tengo datos guardados como fav, si tengo los pinta
 init();
+//me pinta el listado de margaritas cuando abro la pagina
 initialDataApi();
 
-
+//al pulsar en el boton de reset me devuelve el valor del input a cero y me devuelve el listado de margaritas
+const handleReset = (event) => {
+    event.preventDefault();
+    inputSearch.value = "";
+    initialDataApi();
+    
+};
+btnReset.addEventListener('click', handleReset);
     

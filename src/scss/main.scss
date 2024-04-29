@@ -1,25 +1,77 @@
-li{
-    list-style: none;
+.main{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #F86E24;
+    background-color:antiquewhite;
+
+    &__title{
+        text-align: center;
+        padding: 20px;
+    }
+    &__search{
+        text-align: center;
+       
+
+
+        
+        
+       
+    }
+}
+
+.section{
+    display: flex;
+    flex-direction: row-reverse;
+   justify-content: space-around;
+   
+
+   &__drinks{
+       
+    &--title{
+        text-align: center;
+        padding: 20px;
+    }
+
+    &--list{
+        padding: 20px;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+   }
+
+}
+
+.drinks{
+    text-align: center;
+    width: 120px;
+    
 }
 
 .img{
     width: 100px;
     height: 100px;
+
+}
+
+.drinkName{
+    padding-bottom: 10px;
 }
 
 .selected{
-    border: 2px solid aqua;
-    border-radius: 25px;
-    color: aqua;
+    border: 2px solid #F86E24;
+    color: white;
+    background-color: #F86E24;
+    
 }
 
-.list{
-    display: flex;
-    flex-direction: row-reverse;
-   justify-content: space-around;
-
-   
-}
-.hidden{
-    display: none;
+.btnX{
+    border-radius: 100%;
+    border: none;
+    background-color: gray;
+    color: white;
+    width: 30px;
+    height: 30px;
+    font-weight: 800;
 }

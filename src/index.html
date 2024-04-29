@@ -14,19 +14,21 @@
   </head>
 
   <body>
-    <main>
-      <h1>Buscador de cocktail</h1>
-      <input type="text" class="js_input" placeholder="Ej: Margarita">
-      <button class="js_btnSearch">Buscar</button>
-      <button class="js_btnReset">Reset</button>
-      <section class="list">
-        <div class="list__totals">
-          <h2>Listado de cocktail</h2>
-          <ul class="js_list"></ul>
+    <main class="main">
+      <h1 class="main__title">Buscador de cocktail</h1>
+      <div class="main__search">
+        <input type="text" class="js_input" placeholder="Ej: Margarita">
+        <button class=" main__search--btn js_btnSearch">Buscar</button>
+        <button class=" main__search--btn js_btnReset">Reset</button>
+      </div>
+      <section class="section">
+        <div class="section__drinks">
+          <h2 class="section__drinks--title">Listado de cocktail</h2>
+          <ul class=" section__drinks--list js_list"></ul>
         </div>
-        <div class="list__fav ">
-          <h2>Lista de favoritos</h2>
-          <ul class="js_favorite"></ul>
+        <div class="section__drinks">
+          <h2 class="section__drinks--title">Lista de favoritos</h2>
+          <ul class="section__drinks--list js_favorite"></ul>
           <div class=js_reset_container></div>
           
         </div>
