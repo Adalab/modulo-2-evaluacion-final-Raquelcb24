@@ -48,7 +48,7 @@ const handleFavorite = (event) =>{
 
     event.currentTarget.classList.toggle('selected'); //añado o quito la misma clase en cuando hago click
 
-        console.log(favoriteCocktails);
+       console.log(favoriteCocktails);
         renderFavoriteList();
        localStorage.setItem('favoriteDrinks', JSON.stringify (favoriteCocktails)); //guardo en localStorage la lista de los que he pulsado como favoritos
     };
@@ -58,7 +58,17 @@ const renderAllDrinks = (arr) =>{ //estructura de todas mis bebidas
     drinksList.innerHTML= "";
    
     for (const drink of arr) {
-        drinksList.innerHTML += renderDrink(drink);
+        const isFav = favoriteCocktails.some((item)=>item.idDrink ===drink.idDrink);
+
+        let selectedClass = isFav ? 'selected' : '';
+
+        drinksList.innerHTML +=`
+        <li class="drinks ${selectedClass}" id=${drink.idDrink}>
+                <h3>${drink.strDrink}</h3>
+                <div>
+                    <img class="img" src="${drink.strDrinkThumb}" alt="cocktails">
+                </div>
+            </li>`;
     }
 
     const liDrink = document.querySelectorAll('.drinks'); //todads mis li
@@ -71,24 +81,27 @@ const renderAllDrinks = (arr) =>{ //estructura de todas mis bebidas
 const handleResetX = (event)=>{
    
     const drinkId = event.currentTarget.id;
-    
     console.log(drinkId)
+    const item = document.getElementById(drinkId); //me traigo los elementos por su id porque los estoy identificando por id
+
     const index = favoriteCocktails.findIndex((drink)=>drink.idDrink === drinkId);
 
-    if(index !==1){
+    if(index !==-1){
     favoriteCocktails.splice(index, 1);
-    event.currentTarget.remove();
-    
+    item.classList.remove('selected'); //a ese elemento que se corresponde con el que marque para guardar como fav, le quito la clase de css
+    event.currentTarget.remove();//sse quita el elemento de la lista de fav
+    localStorage.setItem('favoriteDrinks', JSON.stringify (favoriteCocktails));
     }
  
 };
 
 
-const renderFavoriteList = (drink)=>{
+const renderFavoriteList = ()=>{
 
     favoritesList.innerHTML = "";
 
     for (const drink of favoriteCocktails) { //creo mi li para meter los fav y añado debajo un boton reset
+
         favoritesList.innerHTML += `
         <li class="drinks js_drinks" id=${drink.idDrink}>
             <h3>${drink.strDrink}</h3>   
@@ -104,7 +117,7 @@ const renderFavoriteList = (drink)=>{
     }
 };
 
-const init = ()=>{
+const init = ()=>{ 
     const favDrinksLocal = localStorage.getItem('favoriteDrinks');
     if(favDrinksLocal !==null){
         favoriteCocktails = JSON.parse(favDrinksLocal);
