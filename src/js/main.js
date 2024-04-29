@@ -5,6 +5,8 @@ const inputSearch = document.querySelector('.js_input');//input para buscar
 const btnSearch = document.querySelector('.js_btnSearch');// boton buscar
 const favoritesList = document.querySelector('.js_favorite'); //ul donde voy a meter los favoritos
 
+const resetContainer = document.querySelectorAll('.js_reset_container'); //div contenedor de bebida y X
+
 
 
 let cocktailsData = []; //aquí voy a guardar todos mis cocktails
@@ -36,18 +38,19 @@ const handleFavorite = (event) =>{
 
     if (favoritesClickedIndex === -1){ //si existe en mi lista de elementos clickados, añadelo
         favoriteCocktails.push(clickedData);
-        event.currentTarget.classList.add('selected'); 
+        
+         
        
     }else{ //sino quitalo
-        favoriteCocktails.splice(favoritesClickedIndex, 1);
-        event.currentTarget.classList.remove('selected'); 
-    }
+        favoriteCocktails.splice(favoritesClickedIndex, 1); 
        
-    //cuando pulso en la bebida se pone y se quita la misma clase
+    }
+
+    event.currentTarget.classList.toggle('selected'); //añado o quito la misma clase en cuando hago click
 
         console.log(favoriteCocktails);
         renderFavoriteList();
-       localStorage.setItem('favoriteDrinks', JSON.stringify (favoriteCocktails));
+       localStorage.setItem('favoriteDrinks', JSON.stringify (favoriteCocktails)); //guardo en localStorage la lista de los que he pulsado como favoritos
     };
   
 
@@ -65,10 +68,39 @@ const renderAllDrinks = (arr) =>{ //estructura de todas mis bebidas
 }
 
 }; 
-const renderFavoriteList = ()=>{
+const handleResetX = (event)=>{
+   
+    const drinkId = event.currentTarget.id;
+    
+    console.log(drinkId)
+    const index = favoriteCocktails.findIndex((drink)=>drink.idDrink === drinkId);
+
+    if(index !==1){
+    favoriteCocktails.splice(index, 1);
+    event.currentTarget.remove();
+    
+    }
+ 
+};
+
+
+const renderFavoriteList = (drink)=>{
+
     favoritesList.innerHTML = "";
-    for (const drink of favoriteCocktails) {
-        favoritesList.innerHTML += renderDrink(drink);
+
+    for (const drink of favoriteCocktails) { //creo mi li para meter los fav y añado debajo un boton reset
+        favoritesList.innerHTML += `
+        <li class="drinks js_drinks" id=${drink.idDrink}>
+            <h3>${drink.strDrink}</h3>   
+            <img class="img" src="${drink.strDrinkThumb}" alt="cocktails">
+            <button  class="js_reset">X</button>
+        </li>`; 
+    }
+
+    const li = document.querySelectorAll('.js_drinks'); //llamo a mis li para que lo elimine todo completo
+    
+    for (const button of li) {
+        button.addEventListener('click',handleResetX)
     }
 };
 
@@ -80,6 +112,7 @@ const init = ()=>{
     }
     
 };
+
 
 const initialDataApi = ()=> {
     fetch (`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`)
@@ -93,7 +126,6 @@ const initialDataApi = ()=> {
     });
 
    
-
 };
 
 const handleInput =()=>{
@@ -124,13 +156,9 @@ const handleClick = (event) =>{
    //cuando le de al boton de buscar solo quiero que me salgan los que tengan el valor del imput
 };
 
-
-
-
-
 btnSearch.addEventListener('click', handleClick);
 init();
 initialDataApi();
 
 
-
+    
