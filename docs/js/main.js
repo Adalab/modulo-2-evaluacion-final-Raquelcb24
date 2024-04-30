@@ -1,2 +1,11 @@
-console.log(">> Ready :)");
+const l=document.querySelector(".js_list"),d=document.querySelector(".js_input"),m=document.querySelector(".js_btnSearch"),a=document.querySelector(".js_favorite"),g=document.querySelector(".js_btnReset");let c=[],s=[];const v=e=>{const n=e.currentTarget.id;console.log(n);const t=c.find(i=>i.idDrink===n);console.log(t);const o=s.findIndex(i=>i.idDrink===n);o===-1?s.push(t):s.splice(o,1),e.currentTarget.classList.toggle("selected"),console.log(s),u(),localStorage.setItem("favoriteDrinks",JSON.stringify(s))},k=e=>{l.innerHTML="";for(const t of e){let i=s.some(h=>h.idDrink===t.idDrink)?"selected":"",r="";t.strDrinkThumb?r=t.strDrinkThumb:r="https://via.placeholder.com/50x50/ffffff/666666/?text=TV",l.innerHTML+=`
+        <li class="drinks ${i}" id="${t.idDrink}">
+                <h3 class="drinkName">${t.strDrink}</h3>
+                <img class="img" src="${r}" alt="cocktails">
+            </li>`}const n=document.querySelectorAll(".drinks");for(const t of n)t.addEventListener("click",v)},p=e=>{const n=e.currentTarget.id;console.log(n);const t=document.getElementById(n),o=s.findIndex(i=>i.idDrink===n);o!==-1&&(s.splice(o,1),t.classList.remove("selected"),e.currentTarget.remove(),localStorage.setItem("favoriteDrinks",JSON.stringify(s)))},u=()=>{a.innerHTML="";for(const n of s)a.innerHTML+=`
+        <li class="js_drinks" id="${n.idDrink}">
+            <h3 class="drinkName">${n.strDrink}</h3>   
+            <img class="img" src="${n.strDrinkThumb}" alt="cocktails">
+            <button  class="btnX js_reset">X</button>
+        </li>`;const e=document.querySelectorAll(".js_drinks");for(const n of e)n.addEventListener("click",p)},D=()=>{const e=localStorage.getItem("favoriteDrinks");e!==null&&(s=JSON.parse(e),u())},f=()=>{fetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita").then(e=>e.json()).then(e=>{console.log(e),c=e.drinks,console.log(e),k(c)})},L=()=>{const n=`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${d.value.toLowerCase()}`;fetch(n).then(t=>t.json()).then(t=>{console.log(t),t.drinks?(c=t.drinks,k(c)):(console.log("No se encontraron resultados"),l.innerHTML="<li>No se encontraron resultados</li>")})},S=e=>{e.preventDefault(),L()};m.addEventListener("click",S);D();f();const b=e=>{e.preventDefault(),d.value="",f()};g.addEventListener("click",b);
 //# sourceMappingURL=main.js.map
