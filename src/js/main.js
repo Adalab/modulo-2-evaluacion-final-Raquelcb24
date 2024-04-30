@@ -100,7 +100,7 @@ const renderFavoriteList = ()=>{
     for (const drink of favoriteCocktails) { //creo mi li para meter los fav y añado debajo un boton reset
         
         favoritesList.innerHTML += `
-        <li class="drinks js_drinks" id="${drink.idDrink}">
+        <li class="js_drinks" id="${drink.idDrink}">
             <h3 class="drinkName">${drink.strDrink}</h3>   
             <img class="img" src="${drink.strDrinkThumb}" alt="cocktails">
             <button  class="btnX js_reset">X</button>
