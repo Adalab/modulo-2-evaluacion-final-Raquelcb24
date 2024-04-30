@@ -4,7 +4,7 @@ const drinksList = document.querySelector('.js_list');//mi ul
 const inputSearch = document.querySelector('.js_input');//input para buscar
 const btnSearch = document.querySelector('.js_btnSearch');// boton buscar
 const favoritesList = document.querySelector('.js_favorite'); //ul donde voy a meter los favoritos
-const btnReset = document.querySelector('.js_btnReset');
+const btnReset = document.querySelector('.js_btnReset'); //boton de reset
 
 
 
@@ -25,21 +25,19 @@ const renderDrink = (drink) => { //estructura de una bebida en el html
     
 };
 
-const handleFavorite = (event) =>{
-
-    const selectedDrinkId = event.currentTarget.id;
+const handleFavorite = (event) =>{//esta funcion me va a agregar la bebida a favoritos si no esta ya, si esta no la añade
+ 
+    const selectedDrinkId = event.currentTarget.id; //dame el id de donde estoy pulsando
     console.log(selectedDrinkId);
     
-    const clickedData = cocktailsData.find((item)=> item.idDrink ===selectedDrinkId);
+    const clickedData = cocktailsData.find((item)=> item.idDrink ===selectedDrinkId); //de mi listado completo de cocteles encuentra el que tiene el id igual que el id del clicado
     console.log(clickedData);
 
-    const favoritesClickedIndex = favoriteCocktails.findIndex((item) => item.idDrink === selectedDrinkId);
+    const favoritesClickedIndex = favoriteCocktails.findIndex((item) => item.idDrink === selectedDrinkId); //en cuenta la posicion para hacer el condicional, si es -1 es que aun no esta en la lista, añadelo
 
-    if (favoritesClickedIndex === -1){ //si existe en mi lista de elementos clickados, añadelo
+    if (favoritesClickedIndex === -1){ //si no existe en mi lista de elementos favoritos, añadelo
         favoriteCocktails.push(clickedData);
         
-         
-       
     }else{ //sino quitalo
         favoriteCocktails.splice(favoritesClickedIndex, 1); 
        
@@ -48,7 +46,7 @@ const handleFavorite = (event) =>{
     event.currentTarget.classList.toggle('selected'); //añado o quito la misma clase en cuando hago click
 
        console.log(favoriteCocktails);
-        renderFavoriteList();
+        renderFavoriteList(); //pinto mi lista de cocteles fav
        localStorage.setItem('favoriteDrinks', JSON.stringify (favoriteCocktails)); //guardo en localStorage la lista de los que he pulsado como favoritos
     };
   
@@ -57,11 +55,11 @@ const renderAllDrinks = (arr) =>{ //estructura de todas mis bebidas
     drinksList.innerHTML= "";
    
     for (const drink of arr) {
-        const isFav = favoriteCocktails.some((item)=>item.idDrink ===drink.idDrink);
+        const isFav = favoriteCocktails.some((item)=>item.idDrink ===drink.idDrink); //recorre el array y si encuentras alguna bebida donde el id del item sea igual al id de mi array, es favorito
 
-        let selectedClass = isFav ? 'selected' : '';
+        let selectedClass = isFav ? 'selected' : ''; //si es favorito deja la clase selected sino quitala
 
-        let img= "";
+        let img= ""; //si alguna de las bebidas del array tiene la imagen vacia, pinta esta img estandar
         if (drink.strDrinkThumb) {
             img = drink.strDrinkThumb;
         } else {
@@ -75,26 +73,26 @@ const renderAllDrinks = (arr) =>{ //estructura de todas mis bebidas
             </li>`;
     }
 
-    const liDrink = document.querySelectorAll('.drinks'); //todads mis li
+    const liDrink = document.querySelectorAll('.drinks'); //todas mis li
    
     for (const item of liDrink) {
-        item.addEventListener('click', handleFavorite); //me da el id de la bebida en la que hago click
+        item.addEventListener('click', handleFavorite); // click en cada uno de los elementos del array para añadirlo o no
 }
 
 }; 
 const handleResetX = (event)=>{
    
-    const drinkId = event.currentTarget.id;
+    const drinkId = event.currentTarget.id; //identifico cual estoy pulsando por su id
     console.log(drinkId)
     const item = document.getElementById(drinkId); //me traigo los elementos por su id porque los estoy identificando por id
 
-    const index = favoriteCocktails.findIndex((drink)=>drink.idDrink === drinkId);
+    const index = favoriteCocktails.findIndex((drink)=>drink.idDrink === drinkId); //encuentra su posicion
 
-    if(index !==-1){
+    if(index !==-1){  //si el elemento existe
     favoriteCocktails.splice(index, 1);
     item.classList.remove('selected'); //a ese elemento que se corresponde con el que marque para guardar como fav, le quito la clase de css
-    event.currentTarget.remove();//sse quita el elemento de la lista de fav
-    localStorage.setItem('favoriteDrinks', JSON.stringify (favoriteCocktails));
+    event.currentTarget.remove();//se quita el elemento de la lista de fav
+    localStorage.setItem('favoriteDrinks', JSON.stringify (favoriteCocktails)); //guardo mi lista de fav
     }
  
 };
@@ -117,7 +115,7 @@ const renderFavoriteList = ()=>{
     const li = document.querySelectorAll('.js_drinks'); //llamo a mis li para que lo elimine todo completo
     
     for (const button of li) {
-        button.addEventListener('click',handleResetX)
+        button.addEventListener('click',handleResetX) //boton de X para cada uno de los elementos
     }
 };
 
@@ -126,13 +124,13 @@ const init = ()=>{
     if(favDrinksLocal !==null){
         favoriteCocktails = JSON.parse(favDrinksLocal);
         renderFavoriteList();
-        //busco en local si tengo datos guardados como fav, si encuentro 
+        //busco en local si tengo datos guardados como fav, si encuentro los pinto con la funcion renderFavorite
     }
     
 };
 
 
-const initialDataApi = ()=> {
+const initialDataApi = ()=> { //funcion de inicio que siempre me va a buscar margaritas
     fetch (`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita`)
     .then (response => response.json())
     .then ((dataMargarita)=>{
@@ -146,7 +144,7 @@ const initialDataApi = ()=> {
    
 };
 
-const handleInput =()=>{
+const handleInput =()=>{ //buscar por el nombre que se pone en el input
     const valueInput = inputSearch.value.toLowerCase(); //valor de mi input y lo convierto a minusculas
     const url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${valueInput}`; //creo una constante con una url que voy a utilizar segun el valor del input de busqueda
     
