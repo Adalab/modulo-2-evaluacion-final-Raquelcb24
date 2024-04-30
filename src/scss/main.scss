@@ -9,12 +9,9 @@
     }
     &__search{
         text-align: center;
-       
-
-
+       &--btn{
         
-        
-       
+       }
     }
 }
 
@@ -37,12 +34,42 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+       
     }
     
    }
 
 }
+.section{
+    display: flex;
+    flex-direction: row-reverse;
+   justify-content: space-around;
+   
 
+   &__fav{
+   text-align: center;
+       
+    &--title{
+        text-align: center;
+        padding: 20px;
+        color: white;
+        background-color: #F86E24;
+    }
+
+    &--list{
+        padding: 20px;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 0.46875rem 2.1875rem rgb(4 9 20 / 3%),
+    0 0.9375rem 1.40625rem rgb(4 9 20 / 3%),
+    0 0.25rem 0.53125rem rgb(4 9 20 / 5%), 0 0.125rem 0.1875rem rgb(4 9 20 / 3%);
+    }
+    
+   }
+
+}
 .drinks{
     text-align: center;
     width: 120px;
@@ -57,6 +84,7 @@
 
 .drinkName{
     padding-bottom: 10px;
+    text-align: center;
 }
 
 .selected{
