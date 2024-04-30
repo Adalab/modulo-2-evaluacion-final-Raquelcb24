@@ -61,10 +61,17 @@ const renderAllDrinks = (arr) =>{ //estructura de todas mis bebidas
 
         let selectedClass = isFav ? 'selected' : '';
 
+        let img= "";
+        if (drink.strDrinkThumb) {
+            img = drink.strDrinkThumb;
+        } else {
+            img = 'https://via.placeholder.com/50x50/ffffff/666666/?text=TV';
+        }
+        
         drinksList.innerHTML +=`
         <li class="drinks ${selectedClass}" id="${drink.idDrink}">
                 <h3 class="drinkName">${drink.strDrink}</h3>
-                <img class="img" src="${drink.strDrinkThumb}" alt="cocktails">
+                <img class="img" src="${img}" alt="cocktails">
             </li>`;
     }
 
