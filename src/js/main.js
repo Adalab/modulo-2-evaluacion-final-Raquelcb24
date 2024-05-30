@@ -5,7 +5,7 @@ const inputSearch = document.querySelector('.js_input');//input para buscar
 const btnSearch = document.querySelector('.js_btnSearch');// boton buscar
 const favoritesList = document.querySelector('.js_favorite'); //ul donde voy a meter los favoritos
 const btnReset = document.querySelector('.js_btnReset'); //boton de reset
-
+const btnLog = document.querySelector('.js_btnLog');
 
 
 let cocktailsData = []; //aquí voy a guardar todos mis cocktails
@@ -14,7 +14,7 @@ let favoriteCocktails = []; //array para la lista de favoritos
 
 
 
-const renderDrink = (drink) => { //estructura de una bebida en el html
+/* const renderDrink = (drink) => { //estructura de una bebida en el html
     return `
         <li class="drinks" id=${drink.idDrink}>
             <h3 class="drinkName">${drink.strDrink}</h3>
@@ -23,7 +23,7 @@ const renderDrink = (drink) => { //estructura de una bebida en el html
             </div>
         </li>`;
     
-};
+}; */
 
 const handleFavorite = (event) =>{//esta funcion me va a agregar la bebida a favoritos si no esta ya, si esta no la añade
  
@@ -65,12 +65,12 @@ const renderAllDrinks = (arr) =>{ //estructura de todas mis bebidas
         } else {
             img = 'https://via.placeholder.com/50x50/ffffff/666666/?text=TV';
         }
-        
+
         drinksList.innerHTML +=`
         <li class="drinks ${selectedClass}" id="${drink.idDrink}">
-                <h3 class="drinkName">${drink.strDrink}</h3>
-                <img class="img" src="${img}" alt="cocktails">
-            </li>`;
+            <h3 class="drinkName">${drink.strDrink}</h3>
+            <img class="img" src="${img}" alt="cocktails">
+        </li>`;
     }
 
     const liDrink = document.querySelectorAll('.drinks'); //todas mis li
@@ -106,9 +106,9 @@ const renderFavoriteList = ()=>{
         
         favoritesList.innerHTML += `
         <li class="js_drinks" id="${drink.idDrink}">
+            <button  class="btnX js_reset">X</button>
             <h3 class="drinkName">${drink.strDrink}</h3>   
             <img class="img" src="${drink.strDrinkThumb}" alt="cocktails">
-            <button  class="btnX js_reset">X</button>
         </li>`; 
     }
 
